@@ -1,122 +1,65 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+/** Componente principal: define las rutas de la aplicación. */
+import { useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import Menu from "./components/Menu";
+import RutaProtegida from "./components/RutaProtegida";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import { borrarSesion, obtenerUsuario, pedirApi } from "./services/api";
 
-function App() {
-  const [count, setCount] = useState(0)
+/**--------------------------------------------------------------------------------------------*/
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+export default function App() {
+    /** Si ya había una sesión guardada en el navegador, se recupera. */
+    const [usuario, setUsuario] = useState(obtenerUsuario());
+    const navigate = useNavigate();
 
-      <div className="ticks"></div>
+/**----------------------------------------------------------------------------------------------
+ * Función para cerrar sesión.
+*/
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    async function cerrarSesion() {
+        try {
+            /** Borra el token en el servidor (Django). */
+            await pedirApi("/logout/", "POST");
+        } catch {
+            /** Aunque falle (por ejemplo, sin conexión), se limpia la sesión local. */
+        }
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        /** Borra el token del navegador y vuelve al login. */
+        borrarSesion();
+        setUsuario(null);
+        navigate("/login");
+    }
+
+/**--------------------------------------------------------------------------------------------*/
+
+    /** <> </> sirve para agrupar sin agregar un div. */
+    return (
+        <>
+            {/* El menú solo se muestra con una sesión iniciada */}
+            {usuario && <Menu usuario={usuario} onCerrarSesion={cerrarSesion} />}
+
+            <main className="container py-4">
+                <Routes>
+                    {/* Si ya inició sesión, el login lo envía al inicio */}
+                    <Route
+                        path="/login"
+                        element={usuario ? <Navigate to="/" replace /> : <Login onLogin={setUsuario} />}
+                    />
+
+                    {/* Pantallas privadas: RutaProtegida pide iniciar sesión */}
+                    <Route
+                        path="/"
+                        element={<RutaProtegida usuario={usuario}><Dashboard usuario={usuario} /></RutaProtegida>}
+                    />
+
+                    {/* Cualquier otra dirección vuelve al inicio */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </main>
+        </>
+    );
 }
 
-export default App
+/**--------------------------------------------------------------------------------------------*/
