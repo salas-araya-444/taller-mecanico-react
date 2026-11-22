@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import ProtectedError
 from rest_framework import status
@@ -99,6 +100,9 @@ def perfil_api(request):
     grupo = request.user.groups.first()
     if grupo:
         rol = grupo.name
+    elif request.user.is_superuser:
+        # El superusuario puede hacer todo, por eso se muestra como administrador
+        rol = 'Administrador'
     else:
         rol = 'Sin rol'
 
@@ -107,5 +111,36 @@ def perfil_api(request):
         'username': request.user.username,
         'rol': rol
     })
+
+#-----------------------------------------------------------------------------------------------
+
+# Lista de mecánicos para el selector del formulario de órdenes en React
+
+@api_view(['GET'])
+def mecanicos_api(request):
+    if not request.user.is_authenticated:
+        return Response({'detail': 'Debe iniciar sesión...'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    mecanicos = User.objects.filter(groups__name='Mecanico').order_by('username')
+    datos = []
+    for mecanico in mecanicos:
+        datos.append({'id': mecanico.id, 'username': mecanico.username})
+
+    return Response(datos)
+
+#-----------------------------------------------------------------------------------------------
+
+# Cerrar sesión: borra el token en el servidor para que ya no se pueda usar
+
+@api_view(['POST'])
+def logout_api(request):
+    if not request.user.is_authenticated:
+        return Response({'detail': 'Debe iniciar sesión...'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    # request.auth es el token con el que se hizo la petición
+    if request.auth:
+        request.auth.delete()
+
+    return Response({'mensaje': 'Sesión cerrada correctamente...'})
 
 #-----------------------------------------------------------------------------------------------

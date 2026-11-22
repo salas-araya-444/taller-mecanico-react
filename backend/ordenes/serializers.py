@@ -3,6 +3,9 @@ from .models import OrdenServicio, DetalleOrden
 
 
 class DetalleOrdenSerializer(serializers.ModelSerializer):
+    # Nombre del repuesto para mostrarlo en React (solo lectura)
+    repuesto_nombre = serializers.CharField(source='repuesto.nombre', read_only=True)
+
     class Meta:
         model = DetalleOrden
         fields = '__all__'
@@ -21,6 +24,9 @@ class DetalleOrdenSerializer(serializers.ModelSerializer):
 class OrdenServicioSerializer(serializers.ModelSerializer):
     # Muestra los repuestos usados dentro de la orden (solo lectura)
     detalles = DetalleOrdenSerializer(many=True, read_only=True)
+    # Placa del vehículo y usuario del mecánico para mostrarlos en React (solo lectura)
+    vehiculo_placa = serializers.CharField(source='vehiculo.placa', read_only=True)
+    mecanico_nombre = serializers.CharField(source='mecanico.username', read_only=True)
 
     class Meta:
         model = OrdenServicio

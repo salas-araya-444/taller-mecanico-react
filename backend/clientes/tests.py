@@ -60,3 +60,20 @@ class ClientesTests(PruebaBase):
         respuesta = self.client.delete(f'/api/clientes/{self.cliente.id}/')
         self.assertEqual(respuesta.status_code, 409)
         self.assertTrue(Cliente.objects.filter(id=self.cliente.id).exists())
+
+    def test_lista_de_mecanicos(self):
+        # Ampliación para React: selector de mecánicos en el formulario de órdenes
+        self.autenticar(self.recepcion)
+        respuesta = self.client.get('/api/mecanicos/')
+        self.assertEqual(respuesta.status_code, 200)
+        nombres = [m['username'] for m in respuesta.data]
+        self.assertIn('mecanico_prueba', nombres)
+        self.assertNotIn('recepcion_prueba', nombres)
+
+    def test_logout_borra_el_token(self):
+        # Ampliación para React: al cerrar sesión el token ya no sirve
+        self.autenticar(self.recepcion)
+        respuesta = self.client.post('/api/logout/')
+        self.assertEqual(respuesta.status_code, 200)
+        respuesta = self.client.get('/api/clientes/')
+        self.assertEqual(respuesta.status_code, 401)

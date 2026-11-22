@@ -3,6 +3,9 @@ from .models import Vehiculo
 
 
 class VehiculoSerializer(serializers.ModelSerializer):
+    # Nombre del cliente para mostrarlo en React (solo lectura)
+    cliente_nombre = serializers.CharField(source='cliente.nombre', read_only=True)
+
     class Meta:
         model = Vehiculo
         fields = '__all__'
