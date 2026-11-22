@@ -2,13 +2,15 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
 
-from clientes.views import perfil_api
+from clientes.views import logout_api, mecanicos_api, perfil_api
 from facturacion.views import reportes_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', obtain_auth_token, name='api-token'),
     path('api/perfil/', perfil_api, name='perfil_api'),
+    path('api/logout/', logout_api, name='logout_api'),
+    path('api/mecanicos/', mecanicos_api, name='mecanicos_api'),
     path('api/reportes/', reportes_api, name='reportes_api'),
 
     path('api/clientes/', include('clientes.urls')),

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'clientes',
@@ -45,6 +46,8 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    # CORS va de primero para que el navegador permita las llamadas desde React
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'taller_backend.barra_final.BarraFinalMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,6 +56,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# CORS: direcciones desde las que React (Vite) puede llamar a la API.
+# Vite usa el puerto 5173 por defecto.
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
 
 ROOT_URLCONF = 'taller_backend.urls'
