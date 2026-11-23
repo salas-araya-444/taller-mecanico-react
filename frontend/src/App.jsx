@@ -5,6 +5,7 @@ import Menu from "./components/Menu";
 import RutaProtegida from "./components/RutaProtegida";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Clientes from "./pages/Clientes";
 import { borrarSesion, obtenerUsuario, pedirApi } from "./services/api";
 
 /**--------------------------------------------------------------------------------------------*/
@@ -52,6 +53,10 @@ export default function App() {
                     <Route
                         path="/"
                         element={<RutaProtegida usuario={usuario}><Dashboard usuario={usuario} /></RutaProtegida>}
+                    />
+                    <Route
+                        path="/clientes"
+                        element={<RutaProtegida usuario={usuario}><Clientes usuario={usuario} /></RutaProtegida>}
                     />
 
                     {/* Cualquier otra dirección vuelve al inicio */}

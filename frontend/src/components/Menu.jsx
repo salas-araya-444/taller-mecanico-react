@@ -14,6 +14,9 @@ export default function Menu({ usuario, onCerrarSesion }) {
                     <NavLink className="nav-link" to="/" end>
                         Inicio
                     </NavLink>
+                    <NavLink className="nav-link" to="/clientes">
+                        Clientes
+                    </NavLink>
 
                 </div>
 
