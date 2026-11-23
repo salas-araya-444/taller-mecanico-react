@@ -1,5 +1,6 @@
 /** Pantalla que administra los clientes del taller. */
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import Paginacion from "../components/Paginacion";
 import { pedirApi, tieneRol } from "../services/api";
@@ -25,6 +26,7 @@ export default function Clientes({ usuario }) {
     const [paginaActual, setPaginaActual] = useState(1);
     const [totalPaginas, setTotalPaginas] = useState(1);
     const [totalRegistros, setTotalRegistros] = useState(0);
+    const navigate = useNavigate();
 
     /** Solo el administrador y la recepcionista pueden modificar clientes. */
     const puedeModificar = tieneRol(usuario, ["Administrador", "Recepcionista"]);
@@ -310,6 +312,12 @@ export default function Clientes({ usuario }) {
                                     <td>{cliente.correo}</td>
                                     <td>
                                         <div className="d-flex flex-wrap gap-1">
+                                            {/* Abre los vehículos filtrados por este cliente */}
+                                            <button className="btn btn-outline-dark btn-sm"
+                                                onClick={() => navigate(`/vehiculos?cliente=${cliente.id}`)}>
+                                                Vehículos
+                                            </button>
+
                                             {puedeModificar && (
                                                 <>
                                                     <button className="btn btn-outline-primary btn-sm"
