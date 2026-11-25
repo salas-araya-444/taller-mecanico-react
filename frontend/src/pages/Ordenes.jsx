@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Alerta from "../components/Alerta";
 import Paginacion from "../components/Paginacion";
+import PanelOrden from "../components/PanelOrden";
 import { obtenerTodos, pedirApi, tieneRol } from "../services/api";
 import { ESTADOS, formatearFecha, formatearMonto } from "../services/formato";
 
@@ -31,6 +32,7 @@ export default function Ordenes({ usuario }) {
     const [formulario, setFormulario] = useState(formularioInicial);
     const [editandoId, setEditandoId] = useState(null);
     const [filtros, setFiltros] = useState(filtrosIniciales);
+    const [ordenAbiertaId, setOrdenAbiertaId] = useState(null);
     const [paginaActual, setPaginaActual] = useState(1);
     const [totalPaginas, setTotalPaginas] = useState(1);
     const [totalRegistros, setTotalRegistros] = useState(0);
@@ -143,7 +145,7 @@ export default function Ordenes({ usuario }) {
 
 /**----------------------------------------------------------------------------------------------
  * Función para guardar una orden (abrirla o actualizarla).
- * El estado no se envía: siempre inicia en RECIBIDA.
+ * El estado no se envía: siempre inicia en RECIBIDA y se cambia desde "Gestionar".
 */
 
     async function guardarOrden(e) {
@@ -228,6 +230,9 @@ export default function Ordenes({ usuario }) {
 
             if (editandoId === orden.id) {
                 cancelarEdicion();
+            }
+            if (ordenAbiertaId === orden.id) {
+                setOrdenAbiertaId(null);
             }
 
             await cargarOrdenes(paginaActual);
@@ -413,6 +418,12 @@ export default function Ordenes({ usuario }) {
                                     <td>{formatearMonto(orden.mano_obra)}</td>
                                     <td>
                                         <div className="d-flex flex-wrap gap-1">
+                                            {/* Abre el panel con los estados y los repuestos usados */}
+                                            <button className="btn btn-outline-dark btn-sm"
+                                                onClick={() => setOrdenAbiertaId(orden.id)}>
+                                                Gestionar
+                                            </button>
+
                                             {/* Una orden facturada ya no se modifica */}
                                             {puedeModificar && orden.estado !== "FACTURADA" && (
                                                 <button className="btn btn-outline-primary btn-sm"
@@ -445,6 +456,18 @@ export default function Ordenes({ usuario }) {
                 onCambiarPagina={(pagina) => cargarOrdenes(pagina)}
                 deshabilitado={cargando || procesando}
             />
+
+            {/* Panel de la orden seleccionada (estados y repuestos usados) */}
+            {ordenAbiertaId !== null && (
+                /* key hace que el panel se vuelva a cargar al abrir otra orden */
+                <PanelOrden
+                    key={ordenAbiertaId}
+                    ordenId={ordenAbiertaId}
+                    usuario={usuario}
+                    onCambio={() => cargarOrdenes(paginaActual)}
+                    onCerrar={() => setOrdenAbiertaId(null)}
+                />
+            )}
         </section>
     );
 }
