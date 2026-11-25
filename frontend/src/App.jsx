@@ -9,6 +9,7 @@ import Clientes from "./pages/Clientes";
 import Vehiculos from "./pages/Vehiculos";
 import Repuestos from "./pages/Repuestos";
 import Ordenes from "./pages/Ordenes";
+import Facturas from "./pages/Facturas";
 import { borrarSesion, obtenerUsuario, pedirApi } from "./services/api";
 
 /**--------------------------------------------------------------------------------------------*/
@@ -72,6 +73,10 @@ export default function App() {
                     <Route
                         path="/ordenes"
                         element={<RutaProtegida usuario={usuario}><Ordenes usuario={usuario} /></RutaProtegida>}
+                    />
+                    <Route
+                        path="/facturas"
+                        element={<RutaProtegida usuario={usuario}><Facturas usuario={usuario} /></RutaProtegida>}
                     />
 
                     {/* Cualquier otra dirección vuelve al inicio */}
