@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Clientes from "./pages/Clientes";
 import Vehiculos from "./pages/Vehiculos";
+import Repuestos from "./pages/Repuestos";
 import { borrarSesion, obtenerUsuario, pedirApi } from "./services/api";
 
 /**--------------------------------------------------------------------------------------------*/
@@ -62,6 +63,10 @@ export default function App() {
                     <Route
                         path="/vehiculos"
                         element={<RutaProtegida usuario={usuario}><Vehiculos usuario={usuario} /></RutaProtegida>}
+                    />
+                    <Route
+                        path="/repuestos"
+                        element={<RutaProtegida usuario={usuario}><Repuestos usuario={usuario} /></RutaProtegida>}
                     />
 
                     {/* Cualquier otra dirección vuelve al inicio */}
