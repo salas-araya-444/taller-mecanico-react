@@ -23,6 +23,9 @@ export default function Menu({ usuario, onCerrarSesion }) {
                     <NavLink className="nav-link" to="/repuestos">
                         Repuestos
                     </NavLink>
+                    <NavLink className="nav-link" to="/ordenes">
+                        Órdenes
+                    </NavLink>
 
                 </div>
 
