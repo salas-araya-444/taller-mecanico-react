@@ -13,6 +13,7 @@ const modulos = [
     { ruta: "/vehiculos", titulo: "Vehículos", texto: "Vehículos de cada cliente e historial." },
     { ruta: "/repuestos", titulo: "Repuestos", texto: "Inventario y stock disponible." },
     { ruta: "/ordenes", titulo: "Órdenes", texto: "Reparaciones y repuestos usados." },
+    { ruta: "/facturas", titulo: "Facturas", texto: "Facturar órdenes finalizadas." },
 ];
 
 export default function Dashboard({ usuario }) {
@@ -22,6 +23,7 @@ export default function Dashboard({ usuario }) {
     const [error, setError] = useState("");
 
     const esAdministrador = tieneRol(usuario, ["Administrador"]);
+    const puedeFacturar = tieneRol(usuario, ["Administrador", "Recepcionista"]);
 
 /**----------------------------------------------------------------------------------------------
  * Consulta los indicadores al abrir la pantalla (igual que en la clase de useEffect + fetch).
@@ -143,7 +145,9 @@ export default function Dashboard({ usuario }) {
             {/* Accesos directos a los módulos */}
             <h2 className="h5 mb-3">Módulos</h2>
             <div className="row g-3">
+                {/* Si no puede facturar se quita el acceso a Facturas */}
                 {modulos
+                    .filter((modulo) => modulo.ruta !== "/facturas" || puedeFacturar)
                     .map((modulo) => (
                         <div key={modulo.ruta} className="col-sm-6 col-lg-4">
                             <Link to={modulo.ruta} className="card card-body h-100 text-decoration-none">

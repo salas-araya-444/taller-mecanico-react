@@ -1,5 +1,6 @@
 /** Componente para mostrar el menú principal. */
 import { NavLink } from "react-router-dom";
+import { tieneRol } from "../services/api";
 
 /**--------------------------------------------------------------------------------------------*/
 
@@ -27,6 +28,12 @@ export default function Menu({ usuario, onCerrarSesion }) {
                         Órdenes
                     </NavLink>
 
+                    {/* El mecánico no factura, por eso no se le muestra el enlace */}
+                    {tieneRol(usuario, ["Administrador", "Recepcionista"]) && (
+                        <NavLink className="nav-link" to="/facturas">
+                            Facturas
+                        </NavLink>
+                    )}
                 </div>
 
                 {/* Usuario conectado y botón para cerrar sesión */}
