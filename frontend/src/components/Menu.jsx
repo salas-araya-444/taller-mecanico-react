@@ -13,7 +13,11 @@ export default function Menu({ usuario, onCerrarSesion }) {
                 <div className="container flex-wrap gap-2">
                     <span className="navbar-brand">
                         <Logo tamano={38} />
-                        Taller Mecánico
+                        {/* Nombre del taller con el apodo debajo */}
+                        <span>
+                            Taller Mecánico
+                            <span className="menu-nombre">"El Yodito"</span>
+                        </span>
                     </span>
 
                     {/* NavLink cambia de pantalla sin recargar la página */}
