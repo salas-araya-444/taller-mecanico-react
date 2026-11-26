@@ -160,6 +160,29 @@ Con estos datos se puede probar todo el recorrido de un carro en el taller, desd
 
 ---
 
+## Pruebas
+
+**Backend (pruebas automatizadas de Django):** en la carpeta `backend`, con el entorno virtual activado:
+
+```bash
+python manage.py test
+```
+
+Resultado: **41 pruebas en OK**. Cubren modelos, reglas del negocio, permisos por rol, stock, estados de la orden, facturación y validación de filtros.
+
+![Pruebas del backend](docs/capturas/17-pruebas-backend.png)
+
+**Frontend:** en la carpeta `frontend`:
+
+```bash
+npm run lint     # revisa el código sin errores
+npm run build    # genera la versión final sin errores
+```
+
+![Lint y build del frontend](docs/capturas/18-lint-build-frontend.png)
+
+---
+
 ## Pantallas
 
 | Inicio de sesión | Inicio (Administrador) |
@@ -195,3 +218,5 @@ El trabajo se dividió en Pull Requests. Cada integrante subió sus cambios desd
 | 9 | Esteban | Ajuste visual en el inicio de sesión |
 | 10 | Yendri | README y documentación |
 | 11 | Aletia | Capturas de pantalla |
+| 12 | Esteban | Nombre del taller en el login y el menú |
+| 13 | Esteban | Correcciones del backend y evidencia de pruebas |

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from ordenes.models import OrdenServicio
 from ordenes.serializers import OrdenServicioSerializer
-from taller_backend.utilidades import tiene_rol
+from taller_backend.utilidades import tiene_rol, es_mecanico
 from .models import Vehiculo
 from .serializers import VehiculoSerializer
 
@@ -41,6 +41,8 @@ def vehiculos_api(request):
         buscar = request.query_params.get('buscar')
 
         if cliente:
+            if not cliente.isdigit():
+                return Response({'cliente': 'El cliente debe ser un número...'}, status=status.HTTP_400_BAD_REQUEST)
             vehiculos = vehiculos.filter(cliente_id=cliente)
         if marca:
             vehiculos = vehiculos.filter(marca__iexact=marca)
@@ -118,6 +120,10 @@ def historial_vehiculo_api(request, id):
     ordenes = OrdenServicio.objects.filter(vehiculo=vehiculo).select_related(
         'mecanico'
     ).prefetch_related('detalles').order_by('-fecha_ingreso')
+
+    # El mecánico solo ve en el historial las órdenes que tiene asignadas
+    if es_mecanico(request.user):
+        ordenes = ordenes.filter(mecanico=request.user)
 
     return Response({
         'vehiculo': VehiculoSerializer(vehiculo).data,

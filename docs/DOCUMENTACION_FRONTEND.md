@@ -126,3 +126,5 @@ Están en [`capturas/`](capturas/):
 | `14-dashboard-mecanico.png` | Inicio del mecánico, sin Facturas en el menú |
 | `15-facturas-mecanico.png` | Mecánico sin permiso para facturas (403) |
 | `16-movil-1.png` a `16-movil-3.png` | Vista en celular |
+| `17-pruebas-backend.png` | Resultado de las 41 pruebas del backend (`python manage.py test`) |
+| `18-lint-build-frontend.png` | Revisión del código (`npm run lint`) y compilación (`npm run build`) del frontend |

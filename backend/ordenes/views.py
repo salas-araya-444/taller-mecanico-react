@@ -43,8 +43,12 @@ def ordenes_api(request):
         if estado:
             ordenes = ordenes.filter(estado=estado.upper())
         if mecanico:
+            if not mecanico.isdigit():
+                return Response({'mecanico': 'El mecánico debe ser un número...'}, status=status.HTTP_400_BAD_REQUEST)
             ordenes = ordenes.filter(mecanico_id=mecanico)
         if vehiculo:
+            if not vehiculo.isdigit():
+                return Response({'vehiculo': 'El vehículo debe ser un número...'}, status=status.HTTP_400_BAD_REQUEST)
             ordenes = ordenes.filter(vehiculo_id=vehiculo)
 
         return respuesta_paginada(ordenes, request.query_params.get('page', 1))
@@ -148,7 +152,8 @@ def cambiar_estado_api(request, id):
         if mano_obra is not None:
             try:
                 mano_obra = float(mano_obra)
-            except ValueError:
+            # TypeError es cuando no llega texto ni número (por ejemplo una lista [])
+            except (ValueError, TypeError):
                 return Response({'mano_obra': 'La mano de obra debe ser un número...'}, status=status.HTTP_400_BAD_REQUEST)
             if mano_obra < 0:
                 return Response({'mano_obra': 'La mano de obra no puede ser negativa...'}, status=status.HTTP_400_BAD_REQUEST)

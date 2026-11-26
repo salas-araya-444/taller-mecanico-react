@@ -111,3 +111,15 @@ class OrdenesTests(PruebaBase):
         self.assertEqual(respuesta.data['total_registros'], 1)
         respuesta = self.client.get('/api/ordenes/?estado=recibida')
         self.assertEqual(respuesta.data['total_registros'], 0)
+
+    def test_filtros_con_letras_devuelven_400(self):
+        self.autenticar(self.admin)
+        self.assertEqual(self.client.get('/api/ordenes/?mecanico=abc').status_code, 400)
+        self.assertEqual(self.client.get('/api/ordenes/?vehiculo=abc').status_code, 400)
+
+    def test_mano_obra_invalida_devuelve_400(self):
+        orden_id = self.crear_orden('EN_REPARACION')
+        self.autenticar(self.admin)
+        respuesta = self.client.post(f'/api/ordenes/{orden_id}/cambiar-estado/',
+                                     {'estado': 'FINALIZADA', 'mano_obra': []}, format='json')
+        self.assertEqual(respuesta.status_code, 400)
