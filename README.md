@@ -122,6 +122,28 @@ Abra **http://localhost:5173** en el navegador.
 
 ---
 
+## Configuración de CORS
+
+React (puerto 5173) y Django (puerto 8000) corren en direcciones distintas, y el navegador bloquea esas llamadas si la API no las autoriza. Por eso el backend usa `django-cors-headers`, configurado en `backend/taller_backend/settings.py`:
+
+```python
+INSTALLED_APPS = [..., 'corsheaders', ...]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',   # va de primero
+    ...
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+```
+
+Solo se permiten esas dos direcciones (las del servidor de desarrollo de Vite), no todo el internet. Si el frontend se publica en otra dirección, hay que agregarla a `CORS_ALLOWED_ORIGINS`.
+
+---
+
 ## Usuarios de prueba
 
 El comando `python manage.py cargar_datos` crea los roles, estos usuarios y algunos datos de ejemplo (3 clientes, 4 vehículos y 5 repuestos):
@@ -198,6 +220,17 @@ npm run build    # genera la versión final sin errores
 | ![Panel](docs/capturas/09-panel-orden.png) | ![Factura](docs/capturas/11-detalle-factura.png) |
 
 Todas las capturas están en [`docs/capturas/`](docs/capturas/) y se describen en la documentación del frontend.
+
+---
+
+## Limitaciones
+
+- **El token no vence.** Django REST Framework usa un token fijo por usuario. Al cerrar sesión la API lo borra (`POST /api/logout/`) y deja de servir, pero si no se cierra sesión sigue siendo válido.
+- **El token se guarda en `localStorage`.** Es lo más sencillo para mantener la sesión al recargar, pero queda expuesto si la página sufriera un ataque XSS. Una versión de producción usaría cookies `HttpOnly`.
+- **No hay pantalla para administrar usuarios ni recuperar la contraseña.** Los usuarios se crean con `cargar_datos` o desde el administrador de Django.
+- **Las facturas no se pueden anular.** Una vez creadas no se editan ni se eliminan; una anulación o nota de crédito quedó fuera del alcance.
+- **El frontend solo tiene revisión con `npm run lint` y `npm run build`.** Las pruebas automatizadas (41) son del backend; las del frontend se hicieron manualmente (escenarios de la documentación).
+- **Solo funciona de forma local.** No está desplegado en un servidor, y CORS solo permite las direcciones de desarrollo de Vite.
 
 ---
 
