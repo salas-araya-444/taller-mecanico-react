@@ -221,7 +221,7 @@ export default function Facturas({ usuario }) {
                                     <td>{factura.numero}</td>
                                     <td>{formatearFecha(factura.fecha)}</td>
                                     <td>{factura.cliente_nombre}</td>
-                                    <td>{factura.vehiculo_placa}</td>
+                                    <td><span className="placa">{factura.vehiculo_placa}</span></td>
                                     <td>{formatearMonto(factura.subtotal)}</td>
                                     <td>{formatearMonto(factura.iva)}</td>
                                     <td><strong>{formatearMonto(factura.total)}</strong></td>
@@ -259,7 +259,7 @@ export default function Facturas({ usuario }) {
 
                     <p className="mb-1">Fecha: {formatearFecha(facturaVista.fecha)}</p>
                     <p className="mb-1">Cliente: {facturaVista.cliente_nombre}</p>
-                    <p className="mb-1">Vehículo: {facturaVista.vehiculo_placa} · Orden #{facturaVista.orden}</p>
+                    <p className="mb-1">Vehículo: {facturaVista.vehiculo_placa} - Orden #{facturaVista.orden}</p>
                     <p>Falla atendida: {facturaVista.ordenDatos.falla_reportada}</p>
 
                     <div className="table-responsive">

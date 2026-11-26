@@ -83,6 +83,11 @@ export default function App() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
+
+            {/* Pie de página */}
+            <footer className="pie-taller">
+                Taller Mecánico - <strong>¡Pura vida!</strong>
+            </footer>
         </>
     );
 }

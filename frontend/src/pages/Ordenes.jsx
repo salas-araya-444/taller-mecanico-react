@@ -407,7 +407,7 @@ export default function Ordenes({ usuario }) {
                             {ordenes.map((orden) => (
                                 <tr key={orden.id}>
                                     <td>{orden.id}</td>
-                                    <td>{orden.vehiculo_placa}</td>
+                                    <td><span className="placa">{orden.vehiculo_placa}</span></td>
                                     <td>{orden.mecanico_nombre}</td>
                                     <td>
                                         <span className={`badge text-bg-${ESTADOS[orden.estado].color}`}>

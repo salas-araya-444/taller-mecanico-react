@@ -431,7 +431,7 @@ export default function Vehiculos({ usuario }) {
                         <tbody>
                             {vehiculos.map((vehiculo) => (
                                 <tr key={vehiculo.id}>
-                                    <td>{vehiculo.placa}</td>
+                                    <td><span className="placa">{vehiculo.placa}</span></td>
                                     <td>{vehiculo.marca} {vehiculo.modelo}</td>
                                     <td>{vehiculo.anio}</td>
                                     <td>{vehiculo.kilometraje} km</td>
@@ -497,7 +497,7 @@ export default function Vehiculos({ usuario }) {
                                     <span className={`badge text-bg-${ESTADOS[orden.estado].color}`}>
                                         {ESTADOS[orden.estado].nombre}
                                     </span>{" "}
-                                    · {formatearFecha(orden.fecha_ingreso)} · Mecánico: {orden.mecanico_nombre}
+                                    - {formatearFecha(orden.fecha_ingreso)} - Mecánico: {orden.mecanico_nombre}
                                 </p>
                                 <p className="mb-1">Falla: {orden.falla_reportada}</p>
                                 {orden.detalles.length > 0 && (

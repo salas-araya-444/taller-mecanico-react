@@ -1,6 +1,7 @@
 /** Pantalla de inicio: accesos a los módulos e indicadores del taller. */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Icono from "../components/Icono";
 import Alerta from "../components/Alerta";
 import { pedirApi, tieneRol } from "../services/api";
 import { formatearMonto } from "../services/formato";
@@ -96,7 +97,7 @@ export default function Dashboard({ usuario }) {
                             <span className="text-muted">Órdenes en taller</span>
                             <span className="fs-2 fw-bold">{indicadores.recibidas + indicadores.enReparacion}</span>
                             <span className="small">
-                                {indicadores.recibidas} recibidas · {indicadores.enReparacion} en reparación
+                                {indicadores.recibidas} recibidas - {indicadores.enReparacion} en reparación
                             </span>
                         </div>
                     </div>
@@ -151,8 +152,14 @@ export default function Dashboard({ usuario }) {
                     .map((modulo) => (
                         <div key={modulo.ruta} className="col-sm-6 col-lg-4">
                             <Link to={modulo.ruta} className="card card-body h-100 text-decoration-none">
-                                <span className="fw-bold">{modulo.titulo}</span>
-                                <span className="text-muted small">{modulo.texto}</span>
+                                {/* El ícono se busca con la ruta sin la "/" (ej: "clientes") */}
+                                <span className="icono-modulo">
+                                    <Icono nombre={modulo.ruta.slice(1)} />
+                                </span>
+                                <span>
+                                    <span className="fw-bold d-block">{modulo.titulo}</span>
+                                    <span className="text-muted small">{modulo.texto}</span>
+                                </span>
                             </Link>
                         </div>
                     ))}
