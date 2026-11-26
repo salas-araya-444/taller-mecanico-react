@@ -1,6 +1,7 @@
 /** Pantalla para iniciar sesión. */
 import { useState } from "react";
 import Alerta from "../components/Alerta";
+import Logo from "../components/Logo";
 import { borrarSesion, guardarSesion, pedirApi } from "../services/api";
 
 /**--------------------------------------------------------------------------------------------*/
@@ -68,11 +69,19 @@ export default function Login({ onLogin }) {
 /**--------------------------------------------------------------------------------------------*/
 
     return (
-        <section className="row justify-content-center">
+        <section className="row justify-content-center login-taller">
             <div className="col-md-6 col-lg-4">
-                <h1 className="h3 mb-4 text-center">Taller Mecánico</h1>
+                <div className="text-center mb-4">
+                    <span className="login-logo">
+                        <Logo tamano={80} />
+                    </span>
+                    <h1 className="login-titulo mt-3">Taller Mecánico</h1>
+                </div>
 
                 <form onSubmit={iniciarSesion} className="card card-body">
+                    {/* Franja con los colores de la bandera */}
+                    <div className="franja-bandera"></div>
+
                     <h2 className="h5 mb-3">Iniciar sesión</h2>
 
                     <Alerta tipo="danger" mensaje={error} />

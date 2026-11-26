@@ -183,7 +183,7 @@ export default function PanelOrden({ ordenId, usuario, onCambio, onCerrar }) {
         <div className="card card-body mt-4">
             <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
                 <h2 className="h5 mb-0">
-                    Orden #{orden.id} · {orden.vehiculo_placa}{" "}
+                    Orden #{orden.id} - {orden.vehiculo_placa}{" "}
                     <span className={`badge text-bg-${ESTADOS[orden.estado].color}`}>
                         {ESTADOS[orden.estado].nombre}
                     </span>
@@ -272,7 +272,7 @@ export default function PanelOrden({ ordenId, usuario, onCambio, onCerrar }) {
             )}
 
             <p>
-                Repuestos: {formatearMonto(totalRepuestos)} · Mano de obra: {formatearMonto(orden.mano_obra)}
+                Repuestos: {formatearMonto(totalRepuestos)} - Mano de obra: {formatearMonto(orden.mano_obra)}
             </p>
 
             {/* Agregar repuestos y finalizar (solo En reparación) */}
