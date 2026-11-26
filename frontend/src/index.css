@@ -305,14 +305,14 @@ a.card:hover {
 /* Franja de la bandera arriba de la tarjeta del login (más alta para que se vean bien las 5 bandas) */
 .card .franja-bandera {
     height: 20px;
-    margin: -1rem -1rem 1rem;
-    /* Esquinas de arriba redondeadas igual que la tarjeta */
-    border-radius: 7px 7px 0 0;
+    /* Queda un poquito separada del borde gris de la tarjeta */
+    margin: -0.125rem -0.125rem 1rem;
+    border-radius: 4px;
 }
 
-/* En el login la tarjeta no lleva la línea azul de arriba, porque ya tiene la bandera */
+/* En el login el borde de arriba es gris como los otros lados, porque ya tiene la bandera */
 .login-taller .card {
-    border-top-width: 1px;
+    border-top: 1px solid var(--bs-border-color);
 }
 
 .pie-taller {
