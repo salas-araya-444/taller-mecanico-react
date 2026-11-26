@@ -71,11 +71,15 @@ export default function Login({ onLogin }) {
     return (
         <section className="row justify-content-center login-taller">
             <div className="col-md-6 col-lg-4">
-                <div className="text-center mb-4">
+                <div className="text-center mb-3">
                     <span className="login-logo">
-                        <Logo tamano={80} />
+                        <Logo tamano={90} />
                     </span>
-                    <h1 className="login-titulo mt-3">Taller Mecánico</h1>
+                    {/* El nombre va en una segunda línea para que el título quede centrado */}
+                    <h1 className="login-titulo mt-2">
+                        Taller Mecánico
+                        <span className="login-nombre">⚙️ "El Yodito" 🔩</span>
+                    </h1>
                 </div>
 
                 <form onSubmit={iniciarSesion} className="card card-body">

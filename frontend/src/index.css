@@ -20,6 +20,12 @@
     --bs-border-color: #cfd6e0;
 }
 
+/* Deja siempre el espacio de la barra de desplazamiento, así la pantalla no "brinca"
+   cuando una página carga datos y se vuelve más larga */
+html {
+    scrollbar-gutter: stable;
+}
+
 body {
     background-color: var(--gris-claro);
 }
@@ -72,6 +78,15 @@ main h1::after {
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
+}
+
+/* "El Yodito" debajo del nombre en el menú */
+.menu-nombre {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    color: var(--oro);
 }
 
 .menu-taller .nav-link {
@@ -279,13 +294,21 @@ a.card:hover {
 /**--------------------------------------------------------------------------------------------*/
 /* Login y pie de página */
 
-.login-taller {
-    padding-top: 3vh;
+/* En el login se quita el espacio de abajo para aprovecharlo y que el logo sea más grande */
+main:has(.login-taller) {
+    padding-bottom: 0 !important;
 }
 
 .login-titulo {
     font-size: 2.2rem;
     white-space: nowrap;
+}
+
+/* Segunda línea del título del login: el nombre del taller */
+.login-nombre {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--oro-oscuro);
 }
 
 .login-titulo::after {
