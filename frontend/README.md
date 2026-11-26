@@ -1,16 +1,14 @@
-# React + Vite
+# Taller Mecánico - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación en React (Vite) del Proyecto Programado #2 de Desarrollo de Software IV.
 
-Currently, two official plugins are available:
+Las instrucciones de instalación, los usuarios de prueba y la prueba guiada están en el [README principal](../README.md).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Comandos:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install      # instala las dependencias
+npm run dev      # inicia la aplicación en http://localhost:5173
+npm run lint     # revisa el código con ESLint
+npm run build    # genera la versión final en la carpeta dist
+```
