@@ -42,6 +42,8 @@ def facturas_api(request):
 
         # Filtro a través de las relaciones: factura -> orden -> vehículo -> cliente
         if cliente:
+            if not cliente.isdigit():
+                return Response({'cliente': 'El cliente debe ser un número...'}, status=status.HTTP_400_BAD_REQUEST)
             facturas = facturas.filter(orden__vehiculo__cliente_id=cliente)
 
         return respuesta_paginada(facturas, request.query_params.get('page', 1))

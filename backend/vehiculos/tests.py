@@ -51,3 +51,21 @@ class VehiculosTests(PruebaBase):
         self.assertEqual(respuesta.status_code, 200)
         self.assertEqual(len(respuesta.data['ordenes']), 1)
         self.assertEqual(len(respuesta.data['ordenes'][0]['detalles']), 1)
+
+    def test_mecanico_solo_ve_sus_ordenes_en_el_historial(self):
+        # Una orden de cada mecánico para el mismo vehículo (la primera se factura para poder abrir otra)
+        mia = self.crear_orden('FINALIZADA', mecanico=self.mecanico)
+        self.autenticar(self.admin)
+        self.client.post('/api/facturas/', {'orden': mia}, format='json')
+        ajena = self.crear_orden(mecanico=self.otro_mecanico)
+
+        self.autenticar(self.mecanico)
+        respuesta = self.client.get(f'/api/vehiculos/{self.vehiculo.id}/historial/')
+        ids = [orden['id'] for orden in respuesta.data['ordenes']]
+        self.assertIn(mia, ids)
+        self.assertNotIn(ajena, ids)
+
+    def test_filtro_cliente_con_letras_devuelve_400(self):
+        self.autenticar(self.admin)
+        respuesta = self.client.get('/api/vehiculos/?cliente=abc')
+        self.assertEqual(respuesta.status_code, 400)

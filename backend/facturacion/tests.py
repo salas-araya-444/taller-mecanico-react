@@ -68,3 +68,8 @@ class FacturacionTests(PruebaBase):
         respuesta = self.client.get('/api/reportes/')
         self.assertEqual(respuesta.status_code, 200)
         self.assertEqual(respuesta.data['repuestos_mas_usados'][0]['total_usado'], 2)
+
+    def test_filtro_cliente_con_letras_devuelve_400(self):
+        self.autenticar(self.admin)
+        respuesta = self.client.get('/api/facturas/?cliente=abc')
+        self.assertEqual(respuesta.status_code, 400)
